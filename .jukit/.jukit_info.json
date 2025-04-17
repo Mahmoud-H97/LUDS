@@ -1,0 +1,1 @@
+{"cmd": "keras.utils.plot_model(mod,show_shapes=True, show_layer_names=True, show_layer_activations=True)", "cmd_opts": "", "import_complete": 1, "terminal": "nvimterm"}
