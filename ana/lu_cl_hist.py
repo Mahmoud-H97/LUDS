@@ -117,3 +117,94 @@ if __name__=="__main__":
 
 #raslist = sorted(os.listdir(folder_path))
 #print(raslist)
+
+
+==========================================================================
+
+import os
+import rasterio
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import defaultdict
+
+def analyze_specific_classes(folder_path, target_classes=[11, 12]):
+    class_areas = {cls: {} for cls in target_classes}  # {class: {year: area}}
+
+    for file in sorted(os.listdir(folder_path)):
+        if file.endswith(".tif"):
+            year = int(''.join(filter(str.isdigit, file)))
+            filepath = os.path.join(folder_path, file)
+            with rasterio.open(filepath) as src:
+                data = src.read(1)
+                pixel_area = abs(src.transform[0] * src.transform[4]) / 1e6  # in sq.km
+
+                for cls in target_classes:
+                    count = np.sum(data == cls)
+                    class_areas[cls][year] = count * pixel_area
+
+    return class_areas
+
+
+def plot_loofbos_naalbos_trend(class_areas):
+    years = sorted(next(iter(class_areas.values())).keys())
+
+    plt.figure(figsize=(10, 6))
+    for cls, areas in class_areas.items():
+        area_list = [areas.get(year, 0) for year in years]
+        label = "Loofbos (Class 11)" if cls == 11 else "Naalbos (Class 12)"
+        plt.plot(years, area_list, marker='o', label=label, linewidth=2)
+
+    plt.xlabel("Year")
+    plt.ylabel("Area (sq.km)")
+    plt.title("Change in Forest Area (Loofbos & Naalbos)")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("loofbos_naalbos_trend.png")
+    plt.show()
+
+
+
+
+
+def analyze_specific_classes(folder_path, target_classes=[321, 323]):
+    class_areas = {cls: {} for cls in target_classes}  # {class: {year: area}}
+
+    for file in sorted(os.listdir(folder_path)):
+        if file.endswith(".tif"):
+            year = int(''.join(filter(str.isdigit, file)))
+            filepath = os.path.join(folder_path, file)
+            with rasterio.open(filepath) as src:
+                data = src.read(1)
+                pixel_area = abs(src.transform[0] * src.transform[4]) / 1e6  # in sq.km
+
+                for cls in target_classes:
+                    count = np.sum(data == cls)
+                    class_areas[cls][year] = count * pixel_area
+
+    return class_areas
+
+def plot_vegetatie_trend(class_areas):
+    years = sorted(next(iter(class_areas.values())).keys())
+
+    plt.figure(figsize=(10, 6))
+    for cls, areas in class_areas.items():
+        area_list = [areas.get(year, 0) for year in years]
+        label = "struikvegtaie in hoogveengebied (Class 321)" if cls == 321 else "struikvegtaie in moerasgebied (Class 323)"
+        plt.plot(years, area_list, marker='o', label=label, linewidth=2)
+
+    plt.xlabel("Year")
+    plt.ylabel("Area (sq.km)")
+    plt.title("Change in struikvegetatie (Laag)")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig("str-vegetatie-hoog_moer_laag_trend.png")
+    plt.show()
+
+# Example usage
+folder_path = "/tudelft.net/staff-umbrella/EDT Veluwe/testbed/lgntest"
+class_data = analyze_specific_classes(folder_path)
+plot_loofbos_naalbos_trend(class_data)
+plot_vegetatie_trend(class_data)
+

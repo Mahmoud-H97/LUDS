@@ -1,1 +1,1 @@
-{"cmd": "if __name__==\"__main__\":\n    folder_path = \"/tudelft.net/staff-umbrella/EDT Veluwe/testbed/lgntest\"\n    area_data = ana_lu(folder_path)\n    plot_lu_byear(area_data)\n\n", "cmd_opts": "", "import_complete": 1, "terminal": "nvimterm"}
+{"cmd": "plot_vegetatie_trend(class_data)", "cmd_opts": "", "import_complete": 1, "terminal": "nvimterm"}
