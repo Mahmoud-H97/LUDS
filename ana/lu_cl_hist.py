@@ -91,17 +91,7 @@ def plot_lu_byear(area_dict):
     # Plot change per class over years
     df = pd.DataFrame(area_dict).fillna(0)
     for cls in df.columns:
-        plt.figure(figsize=(10, 6))
-        plt.bar(df.index, df[cls])
-        plt.title(f"Cange in Area of Class {cls} Over Time")
-        plt.xlabel("Year")
-        plt.ylabel("Area (km²)")
-        plt.tight_layout()
-        plt.savefig(f"class_{cls}_trend.png")
-        plt.close()
-
-
-if __name__=="__main__":
+        plt.figure(figsize=(10, 6))    folder_path = "/tudelft.net/staff-umbrella/EDT Veluwe/testbed/lgntest"
     folder_path = "/tudelft.net/staff-umbrella/EDT Veluwe/testbed/luclhist"
     rasters = load_rasters(folder_path)
 #    check_compatability(rasters)
